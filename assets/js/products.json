@@ -1,0 +1,47 @@
+[
+  {
+  "id": 1,
+  "title": "Laptop",
+  "price": 1009.95,
+  "description": "laptop with some details",
+  "category": "computers",
+  "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrlj8luiqhZA-PyP4Chvs2mMp3LabcOLWjSp27RKti&s",
+  "count": 20
+},
+  {
+    "id": 1,
+    "title": "Laptop",
+    "price": 1009.95,
+    "description": "laptop with some details",
+    "category": "computers",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrlj8luiqhZA-PyP4Chvs2mMp3LabcOLWjSp27RKti&s",
+    "count": 20
+  },
+  {
+    "id": 1,
+    "title": "Laptop",
+    "price": 1009.95,
+    "description": "laptop with some details",
+    "category": "computers",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrlj8luiqhZA-PyP4Chvs2mMp3LabcOLWjSp27RKti&s",
+    "count": 20
+  },
+  {
+    "id": 1,
+    "title": "Laptop",
+    "price": 1009.95,
+    "description": "laptop with some details",
+    "category": "computers",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrlj8luiqhZA-PyP4Chvs2mMp3LabcOLWjSp27RKti&s",
+    "count": 20
+  },
+  {
+    "id": 1,
+    "title": "Laptop",
+    "price": 1009.95,
+    "description": "laptop with some details",
+    "category": "computers",
+    "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrlj8luiqhZA-PyP4Chvs2mMp3LabcOLWjSp27RKti&s",
+    "count": 20
+  }
+]

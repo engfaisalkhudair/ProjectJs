@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>E-store</title>
+        <!-- #--- Top Icon ---# -->
+        <link rel="icon" href="./assets/images/logo/icon logo.png">
+        <!-- #-- Link Bootstrap CSS--# -->
+        <link
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+            rel="stylesheet"
+            integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+            crossorigin="anonymous"
+        >
+        <!-- #-- Fonts --# -->
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&family=Maven+Pro:wght@400;500;600;700;800;900&family=Mouse+Memoirs&family=PT+Serif:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+        <!-- #--- Normailz Icon  ---# -->
+        <!-- <link rel="stylesheet" href="https://kit.fontawesome.com/5672c06f13.css" crossorigin="anonymous"> -->
+        <!-- #--- Style Css ---# -->
+        <link rel="stylesheet" href="./assets/css/style.css">
+    </head>
+    <body>
+        <!-- ##Begin:: Top Second Nav ---------------------- -->
+        <ul class="nav top-second-nav justify-content-between">
+            <div class="left-links ">
+                <img src="./assets/images/logo/Logo.png" alt="">
+            </div>
+            <div class="right-links">
+                <a href="./index.html" class="btn login">
+                    Back For Home Page
+                </a>
+            </div>
+        </ul>
+        <!-- ##End:: Top Second Nav  --- -->
+        <!-- ##Begin:: Show Products And Services ---------------------- -->
+        <section class="show_products_serv">
+            <div class="container">
+                <div class="top-trans">
+                    <h3>Your Products In Cart</h3>
+                      <div class="go-next ">
+                        Total Count  : <span id="totalCount"></span>
+                      </div>
+                      <div class="go-next" >
+                        Total Price : <span id="totalPrice"></span>
+                      </div>
+                </div>
+
+
+                <div class="show_special" style="background-color:#fff; padding: 25px;">
+                    <div class="row row-cols-1 row-cols-md-4 g-4 productsCart">
+                       
+                    </div>
+                </div>
+            </section>
+            
+            <!-- ##End:: Show Products And Services --- -->
+            <!-- #-- js links ----------------------------------------# -->
+            <!-- #-- Link Bootstrap JS --# -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+            <!-- #-- Link normailz Icon JS --# -->
+            <script src="https://kit.fontawesome.com/5672c06f13.js" crossorigin="anonymous"></script>
+            <!-- #-- Link Jquery JS --# -->
+            <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+            <!-- carousel -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.6.0/slick.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+            <!-- #-- My Code Js ::: --# -->
+        <script   src="./assets/js/cart.js"></script>
+        <script src="./assets/js/Controller.js"></script>
+        </body>
+    </html>
