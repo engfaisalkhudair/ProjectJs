@@ -83,29 +83,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
       });
     });
-    // products = {
-    //     "id": 1,
-    //     "title": "test",
-    //     "price": 100229.95,
-    //     "description": "laptopشسي  with some details",
-    //     "category": "computers",
-    //     "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrlj8luiqhZA-PyP4Chvs2mMp3LabcOLWjSp27RKti&s",
-    //     "count": 1
-    // }
-
-    // addProductForCart(products);
-
-    // updateItem(product); 
-    // deleteAllItem();
-    // deleteItem(2);
-    // filtersItemByName("test");
-    // filtersItemByPrice(100229.95);
-    // increaseValue();
-    // decreaseValue();
-    // totalPrice(); 
-    // filtersItemByName("asd");
-    // totalCount();
-
 });
 
 
@@ -147,16 +124,3 @@ addProduct.addEventListener("click" , () => {
         window.location.reload()
     }
 });
-
-
-
-
-    // let products = document.getElementsByClassName('deleteProduct');
-    // console.log(products);
-
-    // products[0].addEventListener('click', event => {
-    //     let parent = document.getElementsByClassName("card-footer");
-    //     const productId = parent[0].getAttribute("data-id");
-    //     console.log(productId);
-    //     window.location.reload()
-    // });
