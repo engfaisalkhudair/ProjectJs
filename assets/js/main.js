@@ -1,8 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
-    
     mainProducts();
-
-
     let addProductInCart = document.querySelectorAll('.addForCart')
     addProductInCart.forEach(e => {
         e.addEventListener('click', () => {   
@@ -33,11 +30,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     removeProducts.forEach(removeProduct => {
         removeProduct.addEventListener('click', () => {
-              
         let getid = removeProduct.id;
-        var myid = getid.match(/\d+/)[0]; 
+        var myid = getid.match(/\d+/)[0];
         let product =  getItemById(parseInt(parseInt(myid)));
-
+        // console.log(product);
         deleteItem(parseInt(myid));
         window.location.reload();
       });
@@ -97,7 +93,6 @@ addProduct.addEventListener("click" , () => {
     let count = document.getElementById("productCount").value;
     console.log(image);
     if(title && title.trim() !== '' && price.trim() !== ''){
-
         let getId = localStorage.getItem("id");
         let id;
         if(getId){
