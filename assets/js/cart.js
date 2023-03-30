@@ -12,10 +12,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
     removeProducts.forEach(removeProduct => {
         removeProduct.addEventListener('click', () => {
-        let parent = document.getElementsByClassName("card-footer");
-        const productId = parent[0].getAttribute("data-id");
-        deleteItemCart(2);
+        let getid = removeProduct.id;
+        console.log(getid);
+
+        var myid = getid.match(/\d+/)[0];
+        let product =  getItemById(parseInt(parseInt(myid)));
+        deleteItemCart(parseInt(myid));
         window.location.reload();
       });
     });
+
 });
