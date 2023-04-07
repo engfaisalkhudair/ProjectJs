@@ -46,261 +46,176 @@ let productsObjects = [{
 ]
 
 function mergedArrayTwo() {
-    let firstProduct = productsObjects;
-    let productsObjLocal = JSON.parse(localStorage.getItem('myProducts'));
-    let products;
-    if(productsObjLocal && productsObjLocal.length > 0){
-      products = productsObjLocal;
-      console.log("done");
-    }else{
-      localStorage.setItem('myProducts', JSON.stringify(firstProduct));
-      products = firstProduct;
-      console.log("else");
-    }
-    return products;
-
+  let firstProduct = productsObjects;
+  let productsObjLocal = JSON.parse(localStorage.getItem('myProducts'));
+  let products;
+  if (productsObjLocal && productsObjLocal.length > 0) {
+    products = productsObjLocal;
+  } else {
+    localStorage.setItem('myProducts', JSON.stringify(firstProduct));
+    products = firstProduct;
+  }
+  return products;
 }
-// -----------------Main Products----------------------------
-function mainProducts() {
 
+function createNode(type, className, clidern, textContent, id, src, attribute, typeinput, value) {
+  let node = document.createElement(type);
+
+  if (Array.isArray(className)) {
+    className.forEach(element => {
+      node.classList.add(element);
+    });
+  } else if (className.trim() !== '') {
+    node.classList.add(className);
+  }
+
+  node.id = id;
+
+  if (src != null) {
+    node.src = src;
+  }
+  if (value != null) {
+    node.value = value;
+  }
+  if (src != null) {
+    node.src = src;
+  }
+  if (attribute != null) {
+    attribute.forEach(element => {
+      node.setAttribute(element.name, element.val);
+    });
+  }
+  node.id = id;
+  node.textContent = textContent;
+  if (clidern != null) {
+    clidern.forEach(element => {
+      node.appendChild(element);
+    });
+  }
+
+  return node;
+}
+
+function showAllProducts() {
   let products = mergedArrayTwo();
   console.log(products);
   products.forEach(product => {
+
     let productContainer = document.querySelector(".newData");
 
-    let productElement = document.createElement("div")
-    productElement.classList.add("col");
-    productElement.id = `parentProduct${product.id}`;
-
-    let productConetnt = document.createElement("div")
-    productConetnt.classList.add("card");
-
-
-    let productImage = document.createElement("img");
-    productImage.src = product.image;
-    productImage.id = "image";
-    productConetnt.appendChild(productImage);
-
-    let bodyContent = document.createElement("div")
-    bodyContent.classList.add("card-body");
-
     // #---Content Body 
-    let productTitle = document.createElement("h4")
-    productTitle.classList.add("title-card");
-    productTitle.id = "title-card";
-    productTitle.textContent = product.title;
-    bodyContent.appendChild(productTitle);
-
-    let productDescription = document.createElement("div")
-    productDescription.classList.add("loc", "mt-2");
-    productDescription.id = "productDescription";
-    productDescription.textContent = product.description;
-    bodyContent.appendChild(productDescription);
-
-    let productCategory = document.createElement("div")
-    productCategory.classList.add("category", "mt-2");
-    productCategory.id = "productCategory";
-    productCategory.textContent = `Category : ${product.category}`;
-    bodyContent.appendChild(productCategory);
-
-    let productPrice = document.createElement("div")
-    productPrice.classList.add("mt-3");
-    productPrice.id = "productPrice";
-    productPrice.textContent = `Price : ${product.price}`;
-    bodyContent.appendChild(productPrice);
-
-    let productCount = document.createElement("div")
-    productCount.classList.add("mt-3", "mb-3");
-    productCount.id = "productCount";
-    productCount.textContent = `Count : ${product.count}`;
-    bodyContent.appendChild(productCount);
+    let productImage = createNode("img", "", null, "",`image${product.id}`, product.image, null);
+    let productTitle = createNode("h4", "title-card", null, product.title, `title-card${product.id}`, null);
+    let productDescription = createNode("div", ["loc", "mt-2"], null, product.description, `productDescription${product.id}`, null);
+    let productCategory = createNode("div", ["category", "mt-2"], null, `Category : ${product.category}`,`productCategory${product.id}`, null);
+    let productPrice = createNode("div", "mt-3", null, `Price : ${product.price}`, `productPrice${product.id}`, null);
+    let productCount = createNode("div", ["mt-3", "mb-3"], null, `Count : ${product.count}`,`productCount${product.id}`, null);
+    let bodyContent = createNode("div", "card-body", [productImage, productTitle, productDescription, productCategory, productPrice, productCount], "", "", null);
     // #---Content Body 
 
-    // #---Content Footer
-
-    let footerContent = document.createElement("div")
-    footerContent.classList.add("card-footer");
-    footerContent.dataset.id = product.id;
-
-    let btnAddtoCart = document.createElement("button")
-    btnAddtoCart.classList.add("btn", "btn-warning", "addForCart");
-    btnAddtoCart.textContent = "Add To Cart";
-    btnAddtoCart.id = `btnAddtoCart${product.id}`;
-    footerContent.appendChild(btnAddtoCart);
-
-    let btnUpdate = document.createElement("button")
-    btnUpdate.classList.add("btn", "btn-success", "ms-2");
-    btnUpdate.textContent = "Update";
-    btnUpdate.setAttribute("data-bs-toggle", "modal");
-    btnUpdate.setAttribute("data-bs-target", `#updateProduct${product.id}`);
-    footerContent.appendChild(btnUpdate);
-
-    let btnRemove = document.createElement("button")
-    btnRemove.classList.add("btn", "btn-danger", "mt-2", "deleteProduct");
-    btnRemove.id = `btnRemove${product.id}`;
-    btnRemove.textContent = "remove";
-    footerContent.appendChild(btnRemove);
 
     // #---Content Footer
-    productConetnt.appendChild(bodyContent)
-    productConetnt.appendChild(footerContent)
+    let btnRemove = createNode("button", ["btn", "btn-danger", "mt-2", "deleteProduct"], null, "remove", `btnRemove${product.id}`, null, null);
+
+    let btnUpdate = createNode("button", ["btn", "btn-success", "ms-2"],
+      null, "Update", ``, null,
+      [{
+          "name": "data-bs-toggle",
+          "val": "modal"
+        },
+        {
+          "name": "data-bs-target",
+          "val": `#updateProduct${product.id}`
+        }
+      ], null, null
+    );
 
 
-    // Make Modal For Update Data Product: 
-
-    let mainModal = document.createElement("div")
-    mainModal.classList.add("modal", "fade");
-    mainModal.id = `updateProduct${product.id}`;
-    mainModal.setAttribute("aria-hidden", "true");
-
-    let modalDialog = document.createElement("div")
-    modalDialog.classList.add("modal-dialog");
-
-    let modalContent = document.createElement("div")
-    modalContent.classList.add("modal-content");
-
-    let modalHeader = document.createElement("div")
-    modalHeader.classList.add("modal-header");
-
-    let texttitle = document.createElement("h1");
-    texttitle.classList.add("modal-title", "fs-5");
-    texttitle.textContent = `Update Product ${product.title}`;
-    modalHeader.appendChild(texttitle);
-
-    let btnclose = document.createElement("button")
-    btnclose.classList.add("btn-close");
-    btnclose.id = `updateProduct${product.id}`;
-    btnclose.setAttribute("data-bs-dismiss", "modal");
-    btnclose.setAttribute("aria-label", "Close");
-    modalHeader.appendChild(btnclose);
-
-    modalContent.appendChild(modalHeader);
-
-    let modalbody = document.createElement("div")
-    modalbody.classList.add("modal-body");
-
-    let form = document.createElement("form");
-
-    let parentIndex = document.createElement("div")
-    parentIndex.classList.add("mb-3");
-
-    let productTitlelabel = document.createElement("label")
-    productTitlelabel.classList.add("col-form-label");
-    productTitlelabel.textContent = "Product Title:";
-    parentIndex.appendChild(productTitlelabel);
-
-    let productTitleinput = document.createElement("input")
-    productTitleinput.classList.add("form-control");
-    productTitleinput.type = "text";
-    productTitleinput.value = `${product.title}`;
-    productTitleinput.id = `productTitleinput${product.id}`;
-    parentIndex.appendChild(productTitleinput);
-
-    let productPricelabel = document.createElement("label")
-    productPricelabel.classList.add("col-form-label");
-    productPricelabel.textContent = "Product price:";
-    parentIndex.appendChild(productPricelabel);
-
-    let productPriceinput = document.createElement("input")
-    productPriceinput.classList.add("form-control");
-    productPriceinput.type = "text";
-    productPriceinput.value = `${product.price}`;
-    productPriceinput.id = `productPriceinput${product.id}`;
-    parentIndex.appendChild(productPriceinput);
-
-    let productDescriptionlabel = document.createElement("label")
-    productDescriptionlabel.classList.add("col-form-label");
-    productDescriptionlabel.textContent = "Product description:";
-    parentIndex.appendChild(productDescriptionlabel);
-
-    let productDescriptioninput = document.createElement("input")
-    productDescriptioninput.classList.add("form-control");
-    productDescriptioninput.type = "text";
-    productDescriptioninput.value = `${product.description}`;
-    productDescriptioninput.id = `productDescriptioninput${product.id}`;
-    parentIndex.appendChild(productDescriptioninput);
-
-    let productCategorylabel = document.createElement("label")
-    productCategorylabel.classList.add("col-form-label");
-    productCategorylabel.textContent = "Product category:";
-    parentIndex.appendChild(productCategorylabel);
-
-    let productCategoryinput = document.createElement("input")
-    productCategoryinput.classList.add("form-control");
-    productCategoryinput.type = "text";
-    productCategoryinput.value = `${product.category}`;
-    productCategoryinput.id = `productCategoryinput${product.id}`;
-
-    parentIndex.appendChild(productCategoryinput);
-
-    let productImagelabel = document.createElement("label")
-    productImagelabel.classList.add("col-form-label");
-    productImagelabel.textContent = "Product image:";
-    parentIndex.appendChild(productImagelabel);
-
-    let productImageinput = document.createElement("input")
-    productImageinput.classList.add("form-control");
-    productImageinput.type = "text";
-    productImageinput.value = `${product.image}`;
-    productImageinput.id = `productImageinput${product.id}`;
-
-    parentIndex.appendChild(productImageinput);
-
-    let productCountlabel = document.createElement("label")
-    productCountlabel.classList.add("col-form-label");
-    productCountlabel.textContent = "Product count:";
-    parentIndex.appendChild(productCountlabel);
-
-    let productCountinput = document.createElement("input")
-    productCountinput.classList.add("form-control");
-    productCountinput.type = "text";
-    productCountinput.value = `${product.count}`;
-    productCountinput.id = `productCountinput${product.id}`;
-    parentIndex.appendChild(productCountinput);
+    let btnAddtoCart = createNode("button", ["btn", "btn-warning", "addForCart"], null, "Add To Cart", `btnAddtoCart${product.id}`, null);
+    let footerContent = createNode("div", "card-footer", [btnAddtoCart, btnUpdate, btnRemove], ``, product.id, null);
+    // #---Content Footer
 
 
-    form.appendChild(parentIndex);
-    modalbody.appendChild(form);
-
-    let modalfooter = document.createElement("div")
-    modalfooter.classList.add("modal-footer");
-
-    let btnclosefooter = document.createElement("button");
-    btnclosefooter.classList.add("btn", "btn-secondary");
-    btnclosefooter.id = `updateProduct${product.id}`;
-    btnclosefooter.textContent = "Close";
-    btnclosefooter.setAttribute("data-bs-dismiss", "modal");
-    btnclosefooter.setAttribute("aria-label", "Close");
-    modalfooter.appendChild(btnclosefooter);
-
-    let updateProductmodal = document.createElement("button");
-    updateProductmodal.classList.add("btn", "btn-primary", "update");
-    updateProductmodal.textContent = "Update Product";
-    updateProductmodal.id = `myupdateProduct${product.id}`;
-    modalfooter.appendChild(updateProductmodal);
-
-    modalContent.appendChild(modalbody);
-    modalContent.appendChild(modalfooter);
-
-    modalDialog.appendChild(modalContent);
-    mainModal.appendChild(modalDialog);
-
-    // let productImage = document.createElement("img");
-    // productImage.src = product.image;
-    // productImage.id = "image";
-    // productConetnt.appendChild(productImage);
-
-    // let bodyContent =  document.createElement("div")
-    // bodyContent.classList.add("card-body");
+    let productConetnt = createNode("div", "card", [bodyContent, footerContent], "", `parentProduct${product.id}`);
+    let productElement = createNode("div", "col", [productConetnt], "", `parentProduct${product.id}`);
+    productContainer.appendChild(productElement);
 
 
-    productElement.appendChild(productConetnt);
-    productElement.appendChild(mainModal);
+
+    let productTitlelabel = createNode("label", "col-form-label", null, "Product Title:", ``, null, null);
+    let productTitleinput = createNode("input", "form-control", null, "Product Title:",
+      `productTitleinput${product.id}`, null, null, "text", `${product.title}`);
+    let productPricelabel = createNode("label", "col-form-label", null, "Product price:", ``, null, null);
+    let productPriceinput = createNode("input", "form-control", null, "Product Title:",
+      `productPriceinput${product.id}`, null, null, "text", `${product.price}`);
+    let productDescriptionlabel = createNode("label", "col-form-label", null, "Product description:", ``, null, null);
+    let productDescriptioninput = createNode("input", "form-control", null, "Product Title:",
+      `productDescriptioninput${product.id}`, null, null, "text", `${product.description}`);
+    let productCategorylabel = createNode("label", "col-form-label", null, "Product category:", ``, null, null);
+    let productCategoryinput = createNode("input", "form-control", null, "Product Title:",
+      `productCategoryinput${product.id}`, null, null, "text", `${product.category}`);
+    let productImagelabel = createNode("label", "col-form-label", null, "Product image:", ``, null, null);
+    let productImageinput = createNode("input", "form-control", null, "Product Title:",
+      `productImageinput${product.id}`, null, null, "text", `${product.image}`);
+    let productCountlabel = createNode("label", "col-form-label", null, "Product count:", ``, null, null);
+    let productCountinput = createNode("input", "form-control", null, "Product count:",
+      `productCountinput${product.id}`, null, null, "text", `${product.count}`);
+
+    let arrayElementForParent = [productTitlelabel, productTitleinput,
+      productPricelabel, productPriceinput,
+      productDescriptionlabel, productDescriptioninput,
+      productCategorylabel, productCategoryinput,
+      productImagelabel, productImageinput,
+      productCountlabel, productCountinput
+    ];
+
+    let parentIndex = createNode("div", "mb-3", arrayElementForParent, "", ``, null, null);
+    let form = createNode("form", "", [parentIndex], "", ``, null, null);
+    let modalbody = createNode("div", "modal-body", [form], "", ``, null, null);
+
+
+    let btnclosefooter = createNode("button", ["btn", "btn", "btn-secondary", "ms-2"],
+      null, "Close", `updateProduct${product.id}`, null,
+      [{
+          "name": "data-bs-toggle",
+          "val": "modal"
+        },
+        {
+          "name": "data-bs-toggle",
+          "val": `Close`
+        }
+      ]
+    );
+    let updateProductmodal = createNode("button", ["btn", "btn-primary", "update"], null, "Update Product", `myupdateProduct${product.id}`, null, null);
+    let modalfooter = createNode("div", "modal-footer", [btnclosefooter, updateProductmodal], "", ``, null, null);
+
+    let texttitle = createNode("h1", ["modal-title", "fs-5"], null, `Update Product ${product.title}`, ``, null, null);
+    let btnclose = createNode("button", "btn-close", null, ``,
+      `updateProduct${product.id}`, null, [{
+        "name": "data-bs-dismiss",
+        val: "modal"
+      }, {
+        "name": "aria-label",
+        val: "Close"
+      }]);
+    let modalHeader = createNode("div", "modal-header", [texttitle, btnclose], "", ``, null, null);
+
+    let modalContent = createNode("div", "modal-content", [modalHeader, modalbody, modalfooter], "", ``, null, null);
+
+
+    let modalDialog = createNode("div", "modal-dialog", [modalContent], "", ``, null, null);
+
+    let mainModal = createNode("div", ["modal", "fade", "myModal"],
+      [modalDialog], "", `updateProduct${product.id}`, null, [{
+        "name": "aria-hidden",
+        "val": "true"
+      }]);
+
+    productContainer.appendChild(mainModal);
     productContainer.appendChild(productElement);
 
   });
-
-};
+}
 
 function addNewItem(product) {
   let products = JSON.parse(localStorage.getItem("myProducts")) || [];
@@ -341,16 +256,21 @@ function updateItem(product) {
   }
 }
 
+let products = mergedArrayTwo();
 function deleteItem(id) {
 
-  let products = mergedArrayTwo();
   let productFind = products.filter(obj => obj.id !== id);
-  // productsObjects.splice(productFind, ++productFind);
+
+  const index = productsObjects.findIndex(item => item.id === id);
+  cartItems = productsObjects;
+  if (index !== -1) {
+    cartItems.splice(index, 1);
+  }
+
   return localStorage.setItem("myProducts", JSON.stringify(productFind));
 }
 
 function getItemById(id) {
-  let products = mergedArrayTwo();
   let productFind = products.find(obj => obj.id === id);
   return productFind;
 }
@@ -362,179 +282,243 @@ function filtersItemByName(title) {
   productContainer.innerHTML = "";
   filteredData.forEach(product => {
 
-    let productElement = document.createElement("div")
-    productElement.classList.add("col");
-
-    let productConetnt = document.createElement("div")
-    productConetnt.classList.add("card");
-
-
-    let productImage = document.createElement("img");
-    productImage.src = product.image;
-    productImage.id = "image";
-    productConetnt.appendChild(productImage);
-
-    let bodyContent = document.createElement("div")
-    bodyContent.classList.add("card-body");
+    let productContainer = document.querySelector(".newData");
 
     // #---Content Body 
-    let productTitle = document.createElement("h4")
-    productTitle.classList.add("title-card");
-    productTitle.id = "title-card";
-    productTitle.textContent = product.title;
-    bodyContent.appendChild(productTitle);
-
-    let productDescription = document.createElement("div")
-    productDescription.classList.add("loc", "mt-2");
-    productDescription.id = "productDescription";
-    productDescription.textContent = product.description;
-    bodyContent.appendChild(productDescription);
-
-    let productCategory = document.createElement("div")
-    productCategory.classList.add("category", "mt-2");
-    productCategory.id = "productCategory";
-    productCategory.textContent = `Category : ${product.category}`;
-    bodyContent.appendChild(productCategory);
-
-    let productPrice = document.createElement("div")
-    productPrice.classList.add("mt-3");
-    productPrice.id = "productPrice";
-    productPrice.textContent = `Price : ${product.price}`;
-    bodyContent.appendChild(productPrice);
-
-    let productCount = document.createElement("div")
-    productCount.classList.add("mt-3", "mb-3");
-    productCount.id = "productCount";
-    productCount.textContent = `Count : ${product.count}`;
-    bodyContent.appendChild(productCount);
+    let productImage = createNode("img", "", null, "", `image`, product.image, null);
+    let productTitle = createNode("h4", "title-card", null, product.title, "title-card", null);
+    let productDescription = createNode("div", ["loc", "mt-2"], null, product.description, "productDescription", null);
+    let productCategory = createNode("div", ["category", "mt-2"], null, `Category : ${product.category}`, "productCategory", null);
+    let productPrice = createNode("div", "mt-3", null, `Price : ${product.price}`, "productPrice", null);
+    let productCount = createNode("div", ["mt-3", "mb-3"], null, `Count : ${product.count}`, "productCount", null);
+    let bodyContent = createNode("div", "card-body", [productImage, productTitle, productDescription, productCategory, productPrice, productCount], "", "", null);
     // #---Content Body 
 
-    // #---Content Footer
-
-    let footerContent = document.createElement("div")
-    footerContent.classList.add("card-footer");
-    footerContent.dataset.id = product.id;
-
-    let btnAddtoCart = document.createElement("button")
-    btnAddtoCart.classList.add("btn", "btn-warning", "addForCart");
-    btnAddtoCart.textContent = "Add To Cart";
-    footerContent.appendChild(btnAddtoCart);
-
-    let btnUpdate = document.createElement("button")
-    btnUpdate.classList.add("btn", "btn-success", "ms-2");
-    btnUpdate.textContent = "Update";
-    footerContent.appendChild(btnUpdate);
-
-    let btnRemove = document.createElement("button")
-    btnRemove.classList.add("btn", "btn-danger", "mt-2", "deleteProduct");
-    console.log(1);
-    btnRemove.textContent = "remove";
-    footerContent.appendChild(btnRemove);
 
     // #---Content Footer
-    productConetnt.appendChild(bodyContent)
-    productConetnt.appendChild(footerContent)
+    let btnRemove = createNode("button", ["btn", "btn-danger", "mt-2", "deleteProduct"], null, "remove", `btnRemove${product.id}`, null, null);
 
-    productElement.appendChild(productConetnt);
+    let btnUpdate = createNode("button", ["btn", "btn-success", "ms-2"],
+      null, "Update", ``, null,
+      [{
+          "name": "data-bs-toggle",
+          "val": "modal"
+        },
+        {
+          "name": "data-bs-target",
+          "val": `#updateProduct${product.id}`
+        }
+      ], null, null
+    );
 
+
+    let btnAddtoCart = createNode("button", ["btn", "btn-warning", "addForCart"], null, "Add To Cart", `btnAddtoCart${product.id}`, null);
+    let footerContent = createNode("div", "card-footer", [btnAddtoCart, btnUpdate, btnRemove], ``, product.id, null);
+    // #---Content Footer
+
+
+    let productConetnt = createNode("div", "card", [bodyContent, footerContent], "", `parentProduct${product.id}`);
+    let productElement = createNode("div", "col", [productConetnt], "", `parentProduct${product.id}`);
     productContainer.appendChild(productElement);
 
+
+
+    let productTitlelabel = createNode("label", "col-form-label", null, "Product Title:", ``, null, null);
+    let productTitleinput = createNode("input", "form-control", null, "Product Title:",
+      `productTitleinput${product.id}`, null, null, "text", `${product.title}`);
+    let productPricelabel = createNode("label", "col-form-label", null, "Product price:", ``, null, null);
+    let productPriceinput = createNode("input", "form-control", null, "Product Title:",
+      `productPriceinput${product.id}`, null, null, "text", `${product.price}`);
+    let productDescriptionlabel = createNode("label", "col-form-label", null, "Product description:", ``, null, null);
+    let productDescriptioninput = createNode("input", "form-control", null, "Product Title:",
+      `productDescriptioninput${product.id}`, null, null, "text", `${product.description}`);
+    let productCategorylabel = createNode("label", "col-form-label", null, "Product category:", ``, null, null);
+    let productCategoryinput = createNode("input", "form-control", null, "Product Title:",
+      `productCategoryinput${product.id}`, null, null, "text", `${product.category}`);
+    let productImagelabel = createNode("label", "col-form-label", null, "Product image:", ``, null, null);
+    let productImageinput = createNode("input", "form-control", null, "Product Title:",
+      `productImageinput${product.id}`, null, null, "text", `${product.image}`);
+    let productCountlabel = createNode("label", "col-form-label", null, "Product count:", ``, null, null);
+    let productCountinput = createNode("input", "form-control", null, "Product count:",
+      `productCountinput${product.id}`, null, null, "text", `${product.count}`);
+
+    let arrayElementForParent = [productTitlelabel, productTitleinput,
+      productPricelabel, productPriceinput,
+      productDescriptionlabel, productDescriptioninput,
+      productCategorylabel, productCategoryinput,
+      productImagelabel, productImageinput,
+      productCountlabel, productCountinput
+    ];
+
+    let parentIndex = createNode("div", "mb-3", arrayElementForParent, "", ``, null, null);
+    let form = createNode("form", "", [parentIndex], "", ``, null, null);
+    let modalbody = createNode("div", "modal-body", [form], "", ``, null, null);
+
+
+    let btnclosefooter = createNode("button", ["btn", "btn", "btn-secondary", "ms-2"],
+      null, "Close", `updateProduct${product.id}`, null,
+      [{
+          "name": "data-bs-toggle",
+          "val": "modal"
+        },
+        {
+          "name": "data-bs-toggle",
+          "val": `Close`
+        }
+      ]
+    );
+    let updateProductmodal = createNode("button", ["btn", "btn-primary", "update"], null, "Update Product", `myupdateProduct${product.id}`, null, null);
+    let modalfooter = createNode("div", "modal-footer", [btnclosefooter, updateProductmodal], "", ``, null, null);
+
+    let texttitle = createNode("h1", ["modal-title", "fs-5"], null, `Update Product ${product.title}`, ``, null, null);
+    let btnclose = createNode("button", "btn-close", null, ``,
+      `updateProduct${product.id}`, null, [{
+        "name": "data-bs-dismiss",
+        val: "modal"
+      }, {
+        "name": "aria-label",
+        val: "Close"
+      }]);
+    let modalHeader = createNode("div", "modal-header", [texttitle, btnclose], "", ``, null, null);
+
+    let modalContent = createNode("div", "modal-content", [modalHeader, modalbody, modalfooter], "", ``, null, null);
+
+
+    let modalDialog = createNode("div", "modal-dialog", [modalContent], "", ``, null, null);
+
+    let mainModal = createNode("div", ["modal", "fade", "myModal"],
+      [modalDialog], "", `updateProduct${product.id}`, null, [{
+        "name": "aria-hidden",
+        "val": "true"
+      }]);
+
+    productContainer.appendChild(mainModal);
+    productContainer.appendChild(productElement);
   });
-
-  // return filteredData;
-
 }
 
 function filtersItemByPrice(price) {
   let products = mergedArrayTwo();
   let filteredData = products.filter(obj => obj.price == price);
-
   let productContainer = document.querySelector(".newData");
   productContainer.innerHTML = "";
   filteredData.forEach(product => {
 
-    let productElement = document.createElement("div")
-    productElement.classList.add("col");
-
-    let productConetnt = document.createElement("div")
-    productConetnt.classList.add("card");
-
-
-    let productImage = document.createElement("img");
-    productImage.src = product.image;
-    productImage.id = "image";
-    productConetnt.appendChild(productImage);
-
-    let bodyContent = document.createElement("div")
-    bodyContent.classList.add("card-body");
+    let productContainer = document.querySelector(".newData");
 
     // #---Content Body 
-    let productTitle = document.createElement("h4")
-    productTitle.classList.add("title-card");
-    productTitle.id = "title-card";
-    productTitle.textContent = product.title;
-    bodyContent.appendChild(productTitle);
-
-    let productDescription = document.createElement("div")
-    productDescription.classList.add("loc", "mt-2");
-    productDescription.id = "productDescription";
-    productDescription.textContent = product.description;
-    bodyContent.appendChild(productDescription);
-
-    let productCategory = document.createElement("div")
-    productCategory.classList.add("category", "mt-2");
-    productCategory.id = "productCategory";
-    productCategory.textContent = `Category : ${product.category}`;
-    bodyContent.appendChild(productCategory);
-
-    let productPrice = document.createElement("div")
-    productPrice.classList.add("mt-3");
-    productPrice.id = "productPrice";
-    productPrice.textContent = `Price : ${product.price}`;
-    bodyContent.appendChild(productPrice);
-
-    let productCount = document.createElement("div")
-    productCount.classList.add("mt-3", "mb-3");
-    productCount.id = "productCount";
-    productCount.textContent = `Count : ${product.count}`;
-    bodyContent.appendChild(productCount);
+    let productImage = createNode("img", "", null, "", `image`, product.image, null);
+    let productTitle = createNode("h4", "title-card", null, product.title, "title-card", null);
+    let productDescription = createNode("div", ["loc", "mt-2"], null, product.description, "productDescription", null);
+    let productCategory = createNode("div", ["category", "mt-2"], null, `Category : ${product.category}`, "productCategory", null);
+    let productPrice = createNode("div", "mt-3", null, `Price : ${product.price}`, "productPrice", null);
+    let productCount = createNode("div", ["mt-3", "mb-3"], null, `Count : ${product.count}`, "productCount", null);
+    let bodyContent = createNode("div", "card-body", [productImage, productTitle, productDescription, productCategory, productPrice, productCount], "", "", null);
     // #---Content Body 
 
-    // #---Content Footer
-
-    let footerContent = document.createElement("div")
-    footerContent.classList.add("card-footer");
-    footerContent.dataset.id = product.id;
-
-    let btnAddtoCart = document.createElement("button")
-    btnAddtoCart.classList.add("btn", "btn-warning", "addForCart");
-    btnAddtoCart.textContent = "Add To Cart";
-    footerContent.appendChild(btnAddtoCart);
-
-    let btnUpdate = document.createElement("button")
-    btnUpdate.classList.add("btn", "btn-success", "ms-2");
-    btnUpdate.textContent = "Update";
-    footerContent.appendChild(btnUpdate);
-
-    let btnRemove = document.createElement("button")
-    btnRemove.classList.add("btn", "btn-danger", "mt-2", "deleteProduct");
-    console.log(1);
-    btnRemove.textContent = "remove";
-    footerContent.appendChild(btnRemove);
 
     // #---Content Footer
-    productConetnt.appendChild(bodyContent)
-    productConetnt.appendChild(footerContent)
+    let btnRemove = createNode("button", ["btn", "btn-danger", "mt-2", "deleteProduct"], null, "remove", `btnRemove${product.id}`, null, null);
 
-    productElement.appendChild(productConetnt);
+    let btnUpdate = createNode("button", ["btn", "btn-success", "ms-2"],
+      null, "Update", ``, null,
+      [{
+          "name": "data-bs-toggle",
+          "val": "modal"
+        },
+        {
+          "name": "data-bs-target",
+          "val": `#updateProduct${product.id}`
+        }
+      ], null, null
+    );
 
+
+    let btnAddtoCart = createNode("button", ["btn", "btn-warning", "addForCart"], null, "Add To Cart", `btnAddtoCart${product.id}`, null);
+    let footerContent = createNode("div", "card-footer", [btnAddtoCart, btnUpdate, btnRemove], ``, product.id, null);
+    // #---Content Footer
+
+
+    let productConetnt = createNode("div", "card", [bodyContent, footerContent], "", `parentProduct${product.id}`);
+    let productElement = createNode("div", "col", [productConetnt], "", `parentProduct${product.id}`);
     productContainer.appendChild(productElement);
 
+
+
+    let productTitlelabel = createNode("label", "col-form-label", null, "Product Title:", ``, null, null);
+    let productTitleinput = createNode("input", "form-control", null, "Product Title:",
+      `productTitleinput${product.id}`, null, null, "text", `${product.title}`);
+    let productPricelabel = createNode("label", "col-form-label", null, "Product price:", ``, null, null);
+    let productPriceinput = createNode("input", "form-control", null, "Product Title:",
+      `productPriceinput${product.id}`, null, null, "text", `${product.price}`);
+    let productDescriptionlabel = createNode("label", "col-form-label", null, "Product description:", ``, null, null);
+    let productDescriptioninput = createNode("input", "form-control", null, "Product Title:",
+      `productDescriptioninput${product.id}`, null, null, "text", `${product.description}`);
+    let productCategorylabel = createNode("label", "col-form-label", null, "Product category:", ``, null, null);
+    let productCategoryinput = createNode("input", "form-control", null, "Product Title:",
+      `productCategoryinput${product.id}`, null, null, "text", `${product.category}`);
+    let productImagelabel = createNode("label", "col-form-label", null, "Product image:", ``, null, null);
+    let productImageinput = createNode("input", "form-control", null, "Product Title:",
+      `productImageinput${product.id}`, null, null, "text", `${product.image}`);
+    let productCountlabel = createNode("label", "col-form-label", null, "Product count:", ``, null, null);
+    let productCountinput = createNode("input", "form-control", null, "Product count:",
+      `productCountinput${product.id}`, null, null, "text", `${product.count}`);
+
+    let arrayElementForParent = [productTitlelabel, productTitleinput,
+      productPricelabel, productPriceinput,
+      productDescriptionlabel, productDescriptioninput,
+      productCategorylabel, productCategoryinput,
+      productImagelabel, productImageinput,
+      productCountlabel, productCountinput
+    ];
+
+    let parentIndex = createNode("div", "mb-3", arrayElementForParent, "", ``, null, null);
+    let form = createNode("form", "", [parentIndex], "", ``, null, null);
+    let modalbody = createNode("div", "modal-body", [form], "", ``, null, null);
+
+
+    let btnclosefooter = createNode("button", ["btn", "btn", "btn-secondary", "ms-2"],
+      null, "Close", `updateProduct${product.id}`, null,
+      [{
+          "name": "data-bs-toggle",
+          "val": "modal"
+        },
+        {
+          "name": "data-bs-toggle",
+          "val": `Close`
+        }
+      ]
+    );
+    let updateProductmodal = createNode("button", ["btn", "btn-primary", "update"], null, "Update Product", `myupdateProduct${product.id}`, null, null);
+    let modalfooter = createNode("div", "modal-footer", [btnclosefooter, updateProductmodal], "", ``, null, null);
+
+    let texttitle = createNode("h1", ["modal-title", "fs-5"], null, `Update Product ${product.title}`, ``, null, null);
+    let btnclose = createNode("button", "btn-close", null, ``,
+      `updateProduct${product.id}`, null, [{
+        "name": "data-bs-dismiss",
+        val: "modal"
+      }, {
+        "name": "aria-label",
+        val: "Close"
+      }]);
+    let modalHeader = createNode("div", "modal-header", [texttitle, btnclose], "", ``, null, null);
+
+    let modalContent = createNode("div", "modal-content", [modalHeader, modalbody, modalfooter], "", ``, null, null);
+
+
+    let modalDialog = createNode("div", "modal-dialog", [modalContent], "", ``, null, null);
+
+    let mainModal = createNode("div", ["modal", "fade", "myModal"],
+      [modalDialog], "", `updateProduct${product.id}`, null, [{
+        "name": "aria-hidden",
+        "val": "true"
+      }]);
+
+    productContainer.appendChild(mainModal);
+    productContainer.appendChild(productElement);
   });
   return filteredData;
 }
-// ---------------------------------------------
-
 // ---------------Cart Products-----------------
 function cartProducts() {
   let cartproducts;
@@ -600,7 +584,7 @@ function cartProducts() {
 
       let btnRemove = document.createElement("button")
       btnRemove.classList.add("btn", "btn-danger", "mt-2", "deleteProduct");
-      btnRemove.textContent = "remove";      
+      btnRemove.textContent = "remove";
       btnRemove.id = `parentProducts${product.id}`;
 
 
@@ -659,33 +643,172 @@ function totalPrice() {
 
 function totalCount() {
   let productsCart = JSON.parse(localStorage.getItem("productsCart"));
-
   if (productsCart) {
-    // const totalcount = productsCart.reduce((acc, productCart) => {
-    //   return acc + productCart.count;
-    // }, 0);
-    // return totalcount;
     return productsCart.length;
   } else {
     return 0;
   }
 }
 
-// ---------------------------------------------
+const numberEle = document.getElementById('number');
 
-// ---------------------------------------------
 function increaseValue() {
-  let value = parseInt(document.getElementById('number').value, 10);
+  let value = parseInt(numberEle.value, 10);
   value = isNaN(value) ? 0 : value;
   value++;
-  document.getElementById('number').value = value;
+  numberEle.value = value;
 }
 
 function decreaseValue() {
-  let value = parseInt(document.getElementById('number').value, 10);
+  let value = parseInt(numberEle.value, 10);
   value = isNaN(value) ? 0 : value;
   value < 1 ? value = 1 : '';
   value--;
-  document.getElementById('number').value = value;
+  numberEle.value = value;
 }
-// ---------------------------------------------
+
+function getIdFromString(dataId) {
+  let getid = dataId;
+  var myid = getid.match(/\d+/)[0];
+  return parseInt(myid);
+}
+
+function updateDataProductView(product , id){
+  let getHtmlData = document.getElementById(`parentProduct${id}`);
+  let image = document.getElementById(`image${id}`);
+  image.src = product.image;
+  let title = document.getElementById(`title-card${id}`);
+  title.textContent = product.title;
+  let description = document.getElementById(`productDescription${id}`);
+  description.textContent = product.description;
+  let price = document.getElementById(`productCategory${id}`);
+  title.textContent = `Category : ${product.category}`;
+  let count = document.getElementById(`productCount${id}`);
+  title.textContent = `Count : ${product.count}`;
+  hideModel(`updateProduct${id}`);
+}
+
+function hideModel(id) {
+  // var model = document.getElementById("myModal");
+
+  const modal = document.querySelector(`#${id}`);
+  modal.style.display = "none";
+  alert("or click any thing ");
+}
+
+function printNewItem(product){
+    let giveData = document.getElementById("myData");    
+    let productContainer = document.querySelector(".newData");
+
+    // #---Content Body 
+    let productImage = createNode("img", "", null, "",`image${product.id}`, product.image, null);
+    let productTitle = createNode("h4", "title-card", null, product.title, `title-card${product.id}`, null);
+    let productDescription = createNode("div", ["loc", "mt-2"], null, product.description, `productDescription${product.id}`, null);
+    let productCategory = createNode("div", ["category", "mt-2"], null, `Category : ${product.category}`,`productCategory${product.id}`, null);
+    let productPrice = createNode("div", "mt-3", null, `Price : ${product.price}`, `productPrice${product.id}`, null);
+    let productCount = createNode("div", ["mt-3", "mb-3"], null, `Count : ${product.count}`,`productCount${product.id}`, null);
+    let bodyContent = createNode("div", "card-body", [productImage, productTitle, productDescription, productCategory, productPrice, productCount], "", "", null);
+    // #---Content Body 
+
+
+    // #---Content Footer
+    let btnRemove = createNode("button", ["btn", "btn-danger", "mt-2", "deleteProduct"], null, "remove", `btnRemove${product.id}`, null, null);
+
+    let btnUpdate = createNode("button", ["btn", "btn-success", "ms-2"],
+      null, "Update", ``, null,
+      [{
+          "name": "data-bs-toggle",
+          "val": "modal"
+        },
+        {
+          "name": "data-bs-target",
+          "val": `#updateProduct${product.id}`
+        }
+      ], null, null
+    );
+
+
+    let btnAddtoCart = createNode("button", ["btn", "btn-warning", "addForCart"], null, "Add To Cart", `btnAddtoCart${product.id}`, null);
+    let footerContent = createNode("div", "card-footer", [btnAddtoCart, btnUpdate, btnRemove], ``, product.id, null);
+    // #---Content Footer
+
+
+    let productConetnt = createNode("div", "card", [bodyContent, footerContent], "", `parentProduct${product.id}`);
+    let productElement = createNode("div", "col", [productConetnt], "", `parentProduct${product.id}`);
+    productContainer.appendChild(productElement);
+
+
+
+    let productTitlelabel = createNode("label", "col-form-label", null, "Product Title:", ``, null, null);
+    let productTitleinput = createNode("input", "form-control", null, "Product Title:",
+      `productTitleinput${product.id}`, null, null, "text", `${product.title}`);
+    let productPricelabel = createNode("label", "col-form-label", null, "Product price:", ``, null, null);
+    let productPriceinput = createNode("input", "form-control", null, "Product Title:",
+      `productPriceinput${product.id}`, null, null, "text", `${product.price}`);
+    let productDescriptionlabel = createNode("label", "col-form-label", null, "Product description:", ``, null, null);
+    let productDescriptioninput = createNode("input", "form-control", null, "Product Title:",
+      `productDescriptioninput${product.id}`, null, null, "text", `${product.description}`);
+    let productCategorylabel = createNode("label", "col-form-label", null, "Product category:", ``, null, null);
+    let productCategoryinput = createNode("input", "form-control", null, "Product Title:",
+      `productCategoryinput${product.id}`, null, null, "text", `${product.category}`);
+    let productImagelabel = createNode("label", "col-form-label", null, "Product image:", ``, null, null);
+    let productImageinput = createNode("input", "form-control", null, "Product Title:",
+      `productImageinput${product.id}`, null, null, "text", `${product.image}`);
+    let productCountlabel = createNode("label", "col-form-label", null, "Product count:", ``, null, null);
+    let productCountinput = createNode("input", "form-control", null, "Product count:",
+      `productCountinput${product.id}`, null, null, "text", `${product.count}`);
+
+    let arrayElementForParent = [productTitlelabel, productTitleinput,
+      productPricelabel, productPriceinput,
+      productDescriptionlabel, productDescriptioninput,
+      productCategorylabel, productCategoryinput,
+      productImagelabel, productImageinput,
+      productCountlabel, productCountinput
+    ];
+
+    let parentIndex = createNode("div", "mb-3", arrayElementForParent, "", ``, null, null);
+    let form = createNode("form", "", [parentIndex], "", ``, null, null);
+    let modalbody = createNode("div", "modal-body", [form], "", ``, null, null);
+
+
+    let btnclosefooter = createNode("button", ["btn", "btn", "btn-secondary", "ms-2"],
+      null, "Close", `updateProduct${product.id}`, null,
+      [{
+          "name": "data-bs-toggle",
+          "val": "modal"
+        },
+        {
+          "name": "data-bs-toggle",
+          "val": `Close`
+        }
+      ]
+    );
+    let updateProductmodal = createNode("button", ["btn", "btn-primary", "update"], null, "Update Product", `myupdateProduct${product.id}`, null, null);
+    let modalfooter = createNode("div", "modal-footer", [btnclosefooter, updateProductmodal], "", ``, null, null);
+
+    let texttitle = createNode("h1", ["modal-title", "fs-5"], null, `Update Product ${product.title}`, ``, null, null);
+    let btnclose = createNode("button", "btn-close", null, ``,
+      `updateProduct${product.id}`, null, [{
+        "name": "data-bs-dismiss",
+        val: "modal"
+      }, {
+        "name": "aria-label",
+        val: "Close"
+      }]);
+    let modalHeader = createNode("div", "modal-header", [texttitle, btnclose], "", ``, null, null);
+
+    let modalContent = createNode("div", "modal-content", [modalHeader, modalbody, modalfooter], "", ``, null, null);
+
+
+    let modalDialog = createNode("div", "modal-dialog", [modalContent], "", ``, null, null);
+
+    let mainModal = createNode("div", ["modal", "fade", "myModal"],
+      [modalDialog], "", `updateProduct${product.id}`, null, [{
+        "name": "aria-hidden",
+        "val": "true"
+      }]);
+
+      giveData.appendChild(mainModal);
+      giveData.appendChild(productElement);
+
+}
