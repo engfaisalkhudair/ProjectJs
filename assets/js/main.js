@@ -1,17 +1,16 @@
-document.addEventListener("DOMContentLoaded", function() {
-    mainProducts();
+document.addEventListener("DOMContentLoaded", function () {
+
+    showAllProducts();
+
+    // Add New Product
+
     let addProductInCart = document.querySelectorAll('.addForCart')
     addProductInCart.forEach(e => {
-        e.addEventListener('click', () => {   
-                     
-            let getid = e.id;
-            var myid = getid.match(/\d+/)[0]; 
-            let product =  getItemById(parseInt(myid));
-            // product.forEach((item) => {
-            //     console.log(item.id);
-            // });
+        e.addEventListener('click', () => {
+            let myid = getIdFromString(e.id);
+            let product = getItemById(myid);
             newProductForCart = {
-                "id": parseInt(myid),
+                "id": myid,
                 "title": product.title,
                 "price": parseInt(product.price),
                 "description": product.description,
@@ -19,46 +18,44 @@ document.addEventListener("DOMContentLoaded", function() {
                 "image": product.image,
                 "count": parseInt(product.count)
             };
-            
+
             addProductForCart(newProductForCart);
-            // window.location.reload();
             alert("Done Add Product For Cart");
-      });
+            
+        });
     });
-    
+
     let removeProducts = document.querySelectorAll('.deleteProduct');
 
     removeProducts.forEach(removeProduct => {
         removeProduct.addEventListener('click', () => {
-        let getid = removeProduct.id;
-        var myid = getid.match(/\d+/)[0];
-        let product =  getItemById(parseInt(parseInt(myid)));
-        // console.log(product);
-        deleteItem(parseInt(myid));
-        window.location.reload();
-      });
+            let myid = getIdFromString(removeProduct.id);
+            deleteItem(myid);
+            let element = document.getElementById(`parentProduct${myid}`);
+            element.remove();
+        });
     });
 
 
     let filterName = document.getElementById("btnFilterName");
-    filterName.addEventListener("click" , () => {
+    filterName.addEventListener("click", () => {
         let name = document.getElementById("nameValue").value;
         filtersItemByName(name);
+        hideModel();
     });
 
     let filterPrice = document.getElementById("btnFilterPrice");
-    filterPrice.addEventListener("click" , () => {
+    filterPrice.addEventListener("click", () => {
         let price = document.getElementById("priceVal").value;
         filtersItemByPrice(price);
+        hideModel();
     });
 
     let updateProducts = document.querySelectorAll(".update");
-
     updateProducts.forEach(updateProduct => {
         updateProduct.addEventListener('click', () => {
-            let getid = updateProduct.id;
-            var myid = getid.match(/\d+/)[0];
-            
+            let myid = getIdFromString(updateProduct.id);
+
             let title = document.getElementById("productTitleinput" + myid).value;
             let price = document.getElementById("productPriceinput" + myid).value;
             let description = document.getElementById("productDescriptioninput" + myid).value;
@@ -74,16 +71,16 @@ document.addEventListener("DOMContentLoaded", function() {
                 "image": image,
                 "count": parseInt(count)
             };
-            updateItem(productupdate); 
-            window.location.reload()
+            updateItem(productupdate);
 
-      });
+            updateDataProductView(productupdate , myid);
+        });
     });
 });
 
 
 let addProduct = document.getElementById("sendProduct");
-addProduct.addEventListener("click" , () => {
+addProduct.addEventListener("click", () => {
     // Give Data From Form :
     let title = document.getElementById("productTitle").value;
     let price = document.getElementById("productPrice").value;
@@ -92,18 +89,16 @@ addProduct.addEventListener("click" , () => {
     let image = document.getElementById("productImage").value;
     let count = document.getElementById("productCount").value;
     console.log(image);
-    if(title && title.trim() !== '' && price.trim() !== ''){
+    if (title && title.trim() !== '' && price.trim() !== '') {
         let getId = localStorage.getItem("id");
-        let id;
-        if(getId){
-            id = ++getId;
-        }else{
-            localStorage.setItem("id" , 1);
-            id = 1;
+        if (getId) {
+            let id = ++getId;
+        } else {
+            localStorage.setItem("id", 1);
+            let id = 1;
         }
 
-        let max = 100; // the maximum value
-        let randomNumber = Math.floor(Math.random() * max); 
+        let randomNumber = Math.floor(Math.random() * 100);
 
         let myProduct = {
             "id": randomNumber,
@@ -114,8 +109,8 @@ addProduct.addEventListener("click" , () => {
             "image": image,
             "count": parseInt(count)
         };
-        addNewItem(myProduct);  
-
-        window.location.reload()
+        addNewItem(myProduct);
+        printNewItem(myProduct);
+        hideModel("addProduct");
     }
 });
