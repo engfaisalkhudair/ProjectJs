@@ -1,85 +1,6 @@
-document.addEventListener("DOMContentLoaded", function () {
-
-    showAllProducts();
-
-    // Add New Product
-
-    let addProductInCart = document.querySelectorAll('.addForCart')
-    addProductInCart.forEach(e => {
-        e.addEventListener('click', () => {
-            let myid = getIdFromString(e.id);
-            let product = getItemById(myid);
-            newProductForCart = {
-                "id": myid,
-                "title": product.title,
-                "price": parseInt(product.price),
-                "description": product.description,
-                "category": product.category,
-                "image": product.image,
-                "count": parseInt(product.count)
-            };
-
-            addProductForCart(newProductForCart);
-            alert("Done Add Product For Cart");
-            
-        });
-    });
-
-    let removeProducts = document.querySelectorAll('.deleteProduct');
-
-    removeProducts.forEach(removeProduct => {
-        removeProduct.addEventListener('click', () => {
-            let myid = getIdFromString(removeProduct.id);
-            deleteItem(myid);
-            let element = document.getElementById(`parentProduct${myid}`);
-            element.remove();
-        });
-    });
-
-
-    let filterName = document.getElementById("btnFilterName");
-    filterName.addEventListener("click", () => {
-        let name = document.getElementById("nameValue").value;
-        filtersItemByName(name);
-        hideModel();
-    });
-
-    let filterPrice = document.getElementById("btnFilterPrice");
-    filterPrice.addEventListener("click", () => {
-        let price = document.getElementById("priceVal").value;
-        filtersItemByPrice(price);
-        hideModel();
-    });
-
-    let updateProducts = document.querySelectorAll(".update");
-    updateProducts.forEach(updateProduct => {
-        updateProduct.addEventListener('click', () => {
-            let myid = getIdFromString(updateProduct.id);
-
-            let title = document.getElementById("productTitleinput" + myid).value;
-            let price = document.getElementById("productPriceinput" + myid).value;
-            let description = document.getElementById("productDescriptioninput" + myid).value;
-            let category = document.getElementById("productCategoryinput" + myid).value;
-            let image = document.getElementById("productImageinput" + myid).value;
-            let count = document.getElementById("productCountinput" + myid).value;
-            productupdate = {
-                "id": myid,
-                "title": title,
-                "price": parseInt(price),
-                "description": description,
-                "category": category,
-                "image": image,
-                "count": parseInt(count)
-            };
-            updateItem(productupdate);
-
-            updateDataProductView(productupdate , myid);
-        });
-    });
-});
-
 
 let addProduct = document.getElementById("sendProduct");
+
 addProduct.addEventListener("click", () => {
     // Give Data From Form :
     let title = document.getElementById("productTitle").value;
@@ -111,6 +32,55 @@ addProduct.addEventListener("click", () => {
         };
         addNewItem(myProduct);
         printNewItem(myProduct);
-        hideModel("addProduct");
+        hideModels("addProduct");
     }
 });
+
+function updateProductMain(id){
+    let title = document.getElementById("productTitleinput" + id).value;
+    let price = document.getElementById("productPriceinput" + id).value;
+    let description = document.getElementById("productDescriptioninput" + id).value;
+    let category = document.getElementById("productCategoryinput" + id).value;
+    let image = document.getElementById("productImageinput" + id).value;
+    let count = document.getElementById("productCountinput" + id).value;
+    productupdate = {
+      "id": id,
+      "title": title,
+      "price": parseInt(price),
+      "description": description,
+      "category": category,
+      "image": image,
+      "count": parseInt(count)
+    };
+    updateItem(productupdate);
+    updateDataProductView(productupdate , id);
+    hideModels(`updateProduct${id}`);
+}
+
+let filterName = document.getElementById("btnFilterName");
+filterName.addEventListener("click", () => {
+    let name = document.getElementById("nameValue").value;
+    console.log(name);
+    if(filtersItemByName(name)){
+        filtersItemByName(name);
+    }else{
+        let productContainer = document.querySelector(".newData");
+        productContainer.innerHTML = "Dont Found This product";
+    }
+    hideModels("filterName");
+});
+
+let filterPrice = document.getElementById("btnFilterPrice");
+filterPrice.addEventListener("click", () => {
+    let price = document.getElementById("priceVal").value;
+    if(filtersItemByPrice(price)){
+        filtersItemByPrice(price);
+    }else{
+        let productContainer = document.querySelector(".newData");
+        productContainer.innerHTML = "Dont Found This product";
+    }
+    hideModels("filterPrice");
+});
+
+
+
